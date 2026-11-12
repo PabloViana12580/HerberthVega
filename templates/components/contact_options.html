@@ -1,0 +1,5 @@
+{# Phone and email buttons. Online booking replaces these once it exists. Usage: {% include "components/contact_options.html" with subject="..." %} #}
+<div class="cs-actions">
+  <a class="cs-btn cs-btn--primary" href="{{ business.phone_href }}">Call {{ business.phone }}</a>
+  <a class="cs-btn cs-btn--quiet" href="mailto:{{ business.email }}{% if subject %}?subject={{ subject|urlencode }}{% endif %}">Email us</a>
+</div>

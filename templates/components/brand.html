@@ -1,0 +1,8 @@
+{# Wordmark. Usage: {% include "components/brand.html" with href=... %} #}
+<a class="cs-brand" href="{{ href|default:'/' }}">
+  <svg class="cs-brand__mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="currentColor"/>
+    <path d="M9 16.5l4.5 4.5L23 11" fill="none" stroke="var(--cs-lemon)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <span class="cs-brand__name">{{ business.name }}</span>
+</a>

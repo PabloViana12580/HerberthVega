@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ service.name }} | {{ business.name }}{% endblock %}
+{% block meta_description %}{{ service.summary }}{% endblock %}
+
+{% block content %}
+<section class="cs-section cs-page-head" aria-labelledby="page-title">
+  <div class="container cs-container cs-detail">
+    <div class="cs-detail__copy">
+      <nav aria-label="Breadcrumb"><a class="cs-text-link" href="{% url 'catalog:service_list' %}">All services</a></nav>
+      <h1 class="cs-page-title" id="page-title">{{ service.name }}</h1>
+      <p class="cs-page-lede">{{ service.description }}</p>
+      <dl class="cs-facts">
+        <div><dt>Price</dt><dd>{% include "components/price.html" with service=service %}</dd></div>
+        {% if service.duration_display %}<div><dt>Typical visit</dt><dd>{{ service.duration_display }}</dd></div>{% endif %}
+      </dl>
+      <p class="cs-detail__note">Online booking is coming soon. To book now, call or email us with the days that work for you.</p>
+      {% include "components/contact_options.html" with subject=service.name|add:" booking request" %}
+    </div>
+    {% if service.image %}
+      <img class="cs-detail__img" src="{% static service.image %}" alt="{{ service.image_alt }}" width="1000" height="667">
+    {% endif %}
+  </div>
+</section>
+
+{% if service.includes_list %}
+  <section class="cs-section cs-section--mist" aria-labelledby="includes-title">
+    <div class="container cs-container">
+      <h2 class="cs-section__title" id="includes-title">What the visit covers</h2>
+      <ul class="cs-includes">
+        {% for item in service.includes_list %}
+          <li>
+            <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg>
+            {{ item }}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+{% endif %}
+
+{% if others %}
+  <section class="cs-section" aria-labelledby="others-title">
+    <div class="container cs-container">
+      <h2 class="cs-section__title" id="others-title">Other services</h2>
+      <div class="cs-service-grid">
+        {% for other in others %}
+          {% include "components/service_card.html" with service=other %}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,40 @@
+{# Site footer. Expects `business`, `nav_services`, and `user`. #}
+<footer class="cs-footer">
+  <div class="container cs-container">
+    <div class="cs-footer__grid">
+      <div>
+        {% url 'pages:home' as home_url %}
+        {% include "components/brand.html" with href=home_url %}
+        <p class="cs-footer__note">Home cleaning in {{ business.service_area }}.</p>
+      </div>
+      <nav aria-labelledby="footer-services">
+        <h2 class="cs-footer__title" id="footer-services">Services</h2>
+        <ul class="cs-footer__list">
+          {% for service in nav_services %}
+            <li><a href="{{ service.get_absolute_url }}">{{ service.name }}</a></li>
+          {% endfor %}
+        </ul>
+      </nav>
+      <div>
+        <h2 class="cs-footer__title">Contact</h2>
+        <ul class="cs-footer__list">
+          <li><a href="{{ business.phone_href }}">{{ business.phone }}</a></li>
+          <li><a href="mailto:{{ business.email }}">{{ business.email }}</a></li>
+          <li>{{ business.hours }}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cs-footer__base">
+      <p>&copy; {% now "Y" %} {{ business.name }}</p>
+      {% if user.is_authenticated %}
+        <form method="post" action="{% url 'logout' %}" class="cs-footer__auth">
+          {% csrf_token %}
+          {% if user.is_staff %}<a href="{% url 'admin:index' %}">Administration</a>{% endif %}
+          <button type="submit" class="cs-link-button">Sign out</button>
+        </form>
+      {% else %}
+        <a href="{% url 'login' %}">Staff sign in</a>
+      {% endif %}
+    </div>
+  </div>
+</footer>

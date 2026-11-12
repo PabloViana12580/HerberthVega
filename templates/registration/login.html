@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Sign in | {{ business.name }}{% endblock %}
+{% block body_class %}cs-login-page{% endblock %}
+
+{% block body %}
+<main class="cs-login" id="main">
+  <div class="cs-login__card">
+    {% url 'pages:home' as home_url %}
+    {% include "components/brand.html" with href=home_url %}
+
+    <h1 class="cs-login__title">Sign in</h1>
+    <p class="cs-login__lede">For staff accounts. Customer accounts aren’t available yet.</p>
+
+    {% if form.non_field_errors %}
+      <div class="cs-alert" role="alert">
+        {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+      </div>
+    {% endif %}
+
+    <form method="post" action="{% url 'login' %}" novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}">
+
+      <div class="cs-field">
+        <label class="cs-label" for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+        <input type="text" name="{{ form.username.html_name }}" id="{{ form.username.id_for_label }}"
+               class="cs-input{% if form.username.errors %} is-invalid{% endif %}"
+               value="{{ form.username.value|default_if_none:'' }}"
+               autocomplete="username" autocapitalize="none" spellcheck="false" required autofocus
+               maxlength="{{ form.username.field.max_length }}"
+               {% if form.username.errors %}aria-invalid="true" aria-describedby="{{ form.username.id_for_label }}-error"{% endif %}>
+        {% if form.username.errors %}
+          <p class="cs-field__error" id="{{ form.username.id_for_label }}-error">{{ form.username.errors|first }}</p>
+        {% endif %}
+      </div>
+
+      {% include "components/password_field.html" with field=form.password %}
+
+      <button type="submit" class="cs-btn cs-btn--primary cs-btn--block">Sign in</button>
+    </form>
+
+    <p class="cs-login__help"><a href="{{ home_url }}">Back to the website</a></p>
+  </div>
+</main>
+{% endblock %}

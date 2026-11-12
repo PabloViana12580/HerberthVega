@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Services | {{ business.name }}{% endblock %}
+
+{% block content %}
+<section class="cs-section cs-page-head" aria-labelledby="page-title">
+  <div class="container cs-container">
+    <h1 class="cs-page-title" id="page-title">Cleaning services</h1>
+    <p class="cs-page-lede">Each service lists what the visit covers. Prices depend on the size of the home; we confirm the exact price when you book.</p>
+  </div>
+</section>
+
+<section class="cs-section cs-section--flush-top" aria-label="All services">
+  <div class="container cs-container">
+    {% if services %}
+      <div class="cs-service-grid">
+        {% for service in services %}
+          {% include "components/service_card.html" with service=service %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="cs-empty">Services will be listed here soon. Call {{ business.phone }} to book in the meantime.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

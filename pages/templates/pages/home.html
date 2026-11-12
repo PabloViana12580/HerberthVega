@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ business.name }} | Home cleaning in {{ business.service_area }}{% endblock %}
+
+{% block content %}
+<section class="cs-hero" aria-labelledby="hero-title">
+  <div class="container cs-container cs-hero__grid">
+    <div class="cs-hero__copy">
+      <h1 class="cs-hero__title" id="hero-title">A clean home, on the schedule you choose.</h1>
+      <p class="cs-hero__lede">Standard, deep, move-out, and post-renovation cleaning across {{ business.service_area }}. Pick a service and tell us when. We bring the supplies and follow the same checklist every visit.</p>
+      <div class="cs-actions">
+        <a class="cs-btn cs-btn--primary" href="{% url 'catalog:service_list' %}">See services</a>
+        <a class="cs-btn cs-btn--quiet" href="{{ business.phone_href }}">Call {{ business.phone }}</a>
+      </div>
+    </div>
+    <figure class="cs-hero__media">
+      <img src="{% static 'img/hero-living-room-mop.jpg' %}" alt="A cleaner mopping the floor of a bright living room" width="1600" height="900" fetchpriority="high">
+      {% if featured and featured.includes_list %}
+        <figcaption class="cs-checklist" aria-label="What a {{ featured.name|lower }} includes">
+          <p class="cs-checklist__title">Every {{ featured.name|lower }} includes</p>
+          <ul class="cs-checklist__items">
+            {% for item in featured.includes_list|slice:":5" %}
+              <li style="--i: {{ forloop.counter0 }}">
+                <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4.5 10.5l3.5 3.5 7.5-8" pathLength="1"/></svg>
+                {{ item }}
+              </li>
+            {% endfor %}
+          </ul>
+          <a class="cs-checklist__link" href="{{ featured.get_absolute_url }}">Full checklist</a>
+        </figcaption>
+      {% endif %}
+    </figure>
+  </div>
+</section>
+
+<section class="cs-section" id="services" aria-labelledby="services-title">
+  <div class="container cs-container">
+    <div class="cs-section__head">
+      <h2 class="cs-section__title" id="services-title">Services</h2>
+      <a class="cs-text-link" href="{% url 'catalog:service_list' %}">Compare all services</a>
+    </div>
+    {% if services %}
+      <div class="cs-service-grid">
+        {% for service in services %}
+          {% include "components/service_card.html" with service=service %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="cs-empty">Services will be listed here soon. Call {{ business.phone }} to book in the meantime.</p>
+    {% endif %}
+    <div class="cs-callout">
+      <div>
+        <h3 class="cs-callout__title">Need something that isn’t listed?</h3>
+        <p>Tell us about the space and what you need done, and we’ll tell you if we can help.</p>
+      </div>
+      <a class="cs-btn cs-btn--quiet" href="mailto:{{ business.email }}?subject={{ 'A cleaning question'|urlencode }}">Email us</a>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section cs-section--mist" aria-labelledby="steps-title">
+  <div class="container cs-container">
+    <h2 class="cs-section__title" id="steps-title">How booking works</h2>
+    <ol class="cs-steps">
+      <li>
+        <h3>Choose a service</h3>
+        <p>Each service lists what the visit covers, so you know what you’re getting before you book.</p>
+      </li>
+      <li>
+        <h3>Pick a day and time</h3>
+        <p>Choose a one-time visit or a repeat schedule. Until online booking opens, call or email us with the time you’d like.</p>
+      </li>
+      <li>
+        <h3>We confirm and arrive</h3>
+        <p>You get a confirmation with the date, time, and price. We arrive with our own supplies.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="cs-section" aria-labelledby="why-title">
+  <div class="container cs-container cs-why">
+    <img class="cs-why__img" src="{% static 'img/supplies.jpg' %}" alt="Two amber spray bottles on a wooden table" width="1000" height="1500" loading="lazy">
+    <div>
+      <h2 class="cs-section__title" id="why-title">Why customers choose us</h2>
+      <dl class="cs-why__list">
+        <div>
+          <dt>The same checklist, every visit</dt>
+          <dd>Each service has a written checklist, so a clean doesn’t depend on who shows up.</dd>
+        </div>
+        <div>
+          <dt>A schedule that fits yours</dt>
+          <dd>Book once, or weekly, every two weeks, or monthly. Change or skip a visit when you need to.</dd>
+        </div>
+        <div>
+          <dt>Clear prices before we start</dt>
+          <dd>You know the price when you book. If the home needs more time than planned, we ask first.</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section cs-section--spruce" id="about" aria-labelledby="about-title">
+  <div class="container cs-container cs-about">
+    <div>
+      <h2 class="cs-section__title" id="about-title">Who we are</h2>
+      <p>{{ business.name }} is a local cleaning team serving homes across {{ business.service_area }}. We started with a simple idea: a cleaning service should be easy to book, show up when it says it will, and leave the home the same way every time.</p>
+      <p>We clean houses, apartments, and homes between tenants, and we work alongside contractors after renovations.</p>
+    </div>
+    <img class="cs-about__img" src="{% static 'img/team-kitchen.jpg' %}" alt="A cleaner in a kitchen holding a caddy of supplies and a broom" width="1000" height="667" loading="lazy">
+  </div>
+</section>
+
+<section class="cs-section" id="contact" aria-labelledby="contact-title">
+  <div class="container cs-container cs-contact">
+    <div>
+      <h2 class="cs-section__title" id="contact-title">Book a clean or ask a question</h2>
+      <p class="cs-contact__lede">Online booking is coming soon. For now, call or email with the service you want and the days that work for you.</p>
+      {% include "components/contact_options.html" with subject="Booking request" %}
+    </div>
+    <dl class="cs-contact__details">
+      <div><dt>Phone</dt><dd><a href="{{ business.phone_href }}">{{ business.phone }}</a></dd></div>
+      <div><dt>Email</dt><dd><a href="mailto:{{ business.email }}">{{ business.email }}</a></dd></div>
+      <div><dt>Hours</dt><dd>{{ business.hours }}</dd></div>
+      <div><dt>Service area</dt><dd>{{ business.service_area }}</dd></div>
+    </dl>
+  </div>
+</section>
+{% endblock %}

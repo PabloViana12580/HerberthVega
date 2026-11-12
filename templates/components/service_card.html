@@ -1,0 +1,12 @@
+{# One service in a grid. Usage: {% include "components/service_card.html" with service=service %} #}
+{% load static %}
+<article class="cs-service">
+  {% if service.image %}
+    <img class="cs-service__img" src="{% static service.image %}" alt="{{ service.image_alt }}" loading="lazy" width="1000" height="667">
+  {% endif %}
+  <div class="cs-service__body">
+    <h3 class="cs-service__name"><a href="{{ service.get_absolute_url }}">{{ service.name }}</a></h3>
+    <p class="cs-service__summary">{{ service.summary }}</p>
+    <p class="cs-service__price">{% include "components/price.html" with service=service %}</p>
+  </div>
+</article>
